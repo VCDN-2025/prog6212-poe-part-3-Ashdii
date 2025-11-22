@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Full Name</label>
+        <input type="text" name="name" required />
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" required />
+    </div>
+
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required />
+    </div>
+
+    <div>
+        <label>Role</label>
+        <select name="role" required>
+            <option value="">-- Select Role --</option>
+            <option value="HR">HR</option>
+            <option value="Lecturer">Lecturer</option>
+            <option value="ProgrammeCoordinator">Programme Coordinator</option>
+            <option value="AcademicManager">Academic Manager</option>
+        </select>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+<p>
+    Already have an account? <a asp-action="Login">Login here</a>
+</p>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}

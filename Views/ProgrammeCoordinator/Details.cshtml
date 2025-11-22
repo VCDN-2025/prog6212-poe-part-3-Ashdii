@@ -1,0 +1,54 @@
+﻿@model CMCSystem.Models.Claim
+
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="container mt-4">
+    <h2>Claim Details</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Lecturer</dt>
+        <dd class="col-sm-9">@Model.Lecturer?.FullName</dd>
+
+        <dt class="col-sm-3">Hours Worked</dt>
+        <dd class="col-sm-9">@Model.HoursWorked</dd>
+
+        <dt class="col-sm-3">Hourly Rate</dt>
+        <dd class="col-sm-9">@Model.HourlyRate</dd>
+
+        <dt class="col-sm-3">Total Amount</dt>
+        <dd class="col-sm-9">@Model.TotalAmount</dd>
+
+        <dt class="col-sm-3">Submitted</dt>
+        <dd class="col-sm-9">@Model.DateSubmitted.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-3">Supporting Document</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.SupportingDocumentPath))
+            {
+                <a asp-action="DownloadDocument" asp-route-id="@Model.ClaimId">Download</a>
+            }
+            else
+            {
+                <span>No document</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Comments</dt>
+        <dd class="col-sm-9">@Model.RejectionComments ?? "N/A"</dd>
+    </dl>
+
+    <form asp-action="Approve" method="post" class="d-inline">
+        <input type="hidden" name="id" value="@Model.ClaimId" />
+        <button type="submit" class="btn btn-success">Approve</button>
+    </form>
+
+    <form asp-action="Reject" method="post" class="d-inline ms-2">
+        <input type="hidden" name="id" value="@Model.ClaimId" />
+        <input type="text" name="comments" class="form-control mb-2" placeholder="Reason for rejection" />
+        <button type="submit" class="btn btn-danger">Reject</button>
+    </form>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to list</a>
+</div>

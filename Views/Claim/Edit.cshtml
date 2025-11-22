@@ -1,0 +1,40 @@
+﻿@model CMCSystem.Models.Claim
+@{
+    ViewData["Title"] = "Edit Claim";
+}
+<div class="container mt-4" style="max-width:800px;">
+    <h2>Edit Claim</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="ClaimId" />
+        <div class="mb-3">
+            <label class="form-label">Hours Worked</label>
+            <input asp-for="HoursWorked" class="form-control" step="0.01" />
+            <span asp-validation-for="HoursWorked" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Hourly Rate</label>
+            <input asp-for="HourlyRate" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Supporting Document (replace)</label>
+            <input type="file" name="supportingDocument" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model.SupportingDocumentPath))
+            {
+                <div class="mt-2">
+                    Current: <a asp-action="DownloadDocument" asp-route-id="@Model.ClaimId">Download</a>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-success">Save changes</button>
+        <a asp-action="MyClaims" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Lecturer Dashboard";
+    var currentRate = ViewBag.CurrentRate ?? 0;
+}
+
+<div class="container mt-4">
+    <h2>Lecturer Dashboard</h2>
+
+    <!-- Show current rate information -->
+    <div class="alert alert-info mb-4">
+        <h5>Your Current Hourly Rate: <strong>R@(currentRate.ToString("F2"))</strong></h5>
+        <p class="mb-0">This rate is set by HR and used for all your claim calculations.</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Submit New Claim</h5>
+                    <p class="card-text">Create a new claim using your current hourly rate of R@(currentRate.ToString("F2"))</p>
+                    <a class="btn btn-primary" asp-controller="Claim" asp-action="Create">Submit New Claim</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">View My Claims</h5>
+                    <p class="card-text">View and manage your submitted claims.</p>
+                    <a class="btn btn-secondary" asp-controller="Claim" asp-action="MyClaims">My Claims</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

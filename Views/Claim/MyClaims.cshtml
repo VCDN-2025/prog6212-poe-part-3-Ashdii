@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CMCSystem.Models.Claim>
+@{
+    ViewData["Title"] = "My Claims";
+}
+<div class="container mt-4">
+    <h2>My Claims</h2>
+    <a class="btn btn-primary mb-3" asp-action="Create">Submit New Claim</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Claim ID</th>
+                <th>Hours</th>
+                <th>Rate (R)</th>
+                <th>Total (R)</th>
+                <th>Status</th>
+                <th>Date Submitted</th>
+                <th>Document</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.ClaimId</td>
+                    <td>@c.HoursWorked.ToString("F2")</td>
+                    <td>@c.HourlyRate.ToString("F2")</td>
+                    <td>@c.TotalAmount.ToString("F2")</td>
+                    <td>
+                        <span class="badge
+                                @(c.Status == ClaimStatus.ApprovedByManager ? "bg-success" :
+                                                            c.Status == ClaimStatus.RejectedByManager ? "bg-danger" :
+                                                            c.Status == ClaimStatus.ApprovedByCoordinator ? "bg-primary" :
+                                                            c.Status == ClaimStatus.RejectedByCoordinator ? "bg-warning" : "bg-secondary")">
+                        @c.Status
+                    </span>
+                </td>
+                <td>@c.DateSubmitted.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(c.SupportingDocumentPath))
+                        {
+                            <a asp-controller="Claim" asp-action="DownloadDocument" asp-route-id="@c.ClaimId">Download</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No document</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No claims found. <a asp-action="Create">Submit your first claim</a></div>
+    }
+</div>

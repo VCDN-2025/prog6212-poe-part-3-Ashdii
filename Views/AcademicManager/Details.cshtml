@@ -1,0 +1,43 @@
+﻿@model CMCSystem.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details (Manager)";
+}
+<div class="container mt-4">
+    <h2>Claim Details</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Lecturer</dt>
+        <dd class="col-sm-9">@Model.LecturerName</dd>
+        <dt class="col-sm-3">Hours</dt>
+        <dd class="col-sm-9">@Model.HoursWorked</dd>
+        <dt class="col-sm-3">Rate</dt>
+        <dd class="col-sm-9">@Model.HourlyRate</dd>
+        <dt class="col-sm-3">Total</dt>
+        <dd class="col-sm-9">@Model.TotalAmount</dd>
+        <dt class="col-sm-3">Document</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.SupportingDocumentPath))
+            {
+                <a asp-controller="Claim" asp-action="DownloadDocument" asp-route-id="@Model.ClaimId">Download</a>
+            }
+            else
+            {
+
+                <span>No document</span>
+            }
+        </dd>
+    </dl>
+
+    <form asp-controller="Claim" asp-action="Approve" method="post">
+        <input type="hidden" name="id" value="@Model.ClaimId" />
+        <button class="btn btn-success">Approve</button>
+    </form>
+
+    <form asp-controller="Claim" asp-action="Reject" method="post" class="mt-2">
+        <input type="hidden" name="id" value="@Model.ClaimId" />
+        <div class="mb-2"><textarea name="comments" class="form-control" placeholder="Reason"></textarea></div>
+        <button class="btn btn-danger">Reject</button>
+    </form>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back</a>
+</div>

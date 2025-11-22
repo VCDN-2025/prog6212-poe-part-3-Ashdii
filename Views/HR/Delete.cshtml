@@ -1,0 +1,76 @@
+﻿@model CMCSystem.Models.Lecturer
+@{
+    ViewData["Title"] = "Delete Lecturer";
+}
+
+<div class="container mt-4">
+    <h2>Delete Lecturer</h2>
+
+    <div class="alert alert-danger">
+        <h4><i class="fas fa-exclamation-triangle"></i> Warning: Delete Lecturer</h4>
+        <p class="mb-0">This action will permanently delete the lecturer from the system. Any existing claims will be kept but will no longer be associated with this lecturer.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Lecturer Details</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Hourly Rate</dt>
+                <dd class="col-sm-9">R@(Model.HourlyRate.ToString("F2"))</dd>
+
+                <dt class="col-sm-3">Lecturer ID</dt>
+                <dd class="col-sm-9">@Model.LecturerId</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Show claim count if any -->
+    @{
+        var claimCount = ViewBag.ClaimCount ?? 0;
+    }
+    @if (claimCount > 0)
+    {
+        <div class="alert alert-warning mt-3">
+            <strong>Note:</strong> This lecturer has @claimCount existing claim(s). The claims will be kept in the system but will show as "Unknown Lecturer".
+        </div>
+    }
+
+    <form asp-action="DeleteLecturerConfirmed" method="post" class="mt-3">
+        <input type="hidden" name="id" value="@Model.LecturerId" />
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Type "DELETE" to confirm:</label>
+            <input type="text" name="confirmationText" class="form-control" required
+                   placeholder="Type DELETE here to confirm deletion" />
+        </div>
+
+        <button type="submit" class="btn btn-danger" id="deleteButton" disabled>
+            <i class="fas fa-trash"></i> Delete Lecturer
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmationInput = document.querySelector('input[name="confirmationText"]');
+            const deleteButton = document.getElementById('deleteButton');
+
+            confirmationInput.addEventListener('input', function() {
+                if (this.value.toUpperCase() === 'DELETE') {
+                    deleteButton.disabled = false;
+                } else {
+                    deleteButton.disabled = true;
+                }
+            });
+        });
+    </script>
+}
